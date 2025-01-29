@@ -16,12 +16,10 @@ async function checkCalculatedDate() {
 }
 
 cds.on("served", async () => {
-  const calculatedOn = new Date().toISOString() as CdsDate;
-
   // 1) test INSERT with Date string e.g. 2018-01-01T15:00:00.000Z into `Date` column
   await INSERT.into(Calculations).entries({
     ID: id,
-    calculatedOn,
+    calculatedOn: new Date() as unknown as CdsDate,
   });
   console.log("> Testing DateTime to Date conversion during INSERT");
   await checkCalculatedDate();
@@ -30,7 +28,7 @@ cds.on("served", async () => {
 
   // 2) test UPDATE with Date string e.g. 2018-01-01T15:00:00.000Z into `Date` column
   await UPDATE(Calculations, id).set({
-    calculatedOn,
+    calculatedOn: new Date() as unknown as CdsDate,
   });
   console.log("> Testing DateTime to Date conversion during UPDATE");
   await checkCalculatedDate();
